@@ -31,19 +31,15 @@ class VolumeObserver(handler: Handler) : ContentObserver(handler) {
         val currentVolume = audio.getStreamVolume(AudioManager.STREAM_MUSIC)
 
         val delta = previousVolume - currentVolume
-        if (delta > 0) {
-            Log.i(TAG,"Decreased: " + currentVolume)
-        } else if (delta < 0) {
-            Log.i(TAG,"Increased: " + currentVolume)
+        if (delta != 0) {
+            setExternalVolume(currentVolume)
+            previousVolume = currentVolume
         }
-        previousVolume = currentVolume
-        setExternalVolume(currentVolume)
     }
 
     private fun setExternalVolume(vol: Int) {
         Thread {
-            MCApi.turnOn()
-            MCApi.setVolume(vol)
+            MCApi.setInputOnVolume(vol)
         }.start()
     }
 }

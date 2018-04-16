@@ -6,6 +6,8 @@ import android.content.Intent
 import android.util.Log
 
 class ScreenReceiver : BroadcastReceiver() {
+    private val TAG = "ScreenReceiver"
+
     override fun onReceive(context: Context, intent: Intent) {
         logIntent(intent)
         when (intent.action) {
@@ -29,6 +31,6 @@ class ScreenReceiver : BroadcastReceiver() {
 
     private fun logIntent(intent : Intent) {
         val message = "Broadcast intent detected " + intent.action
-        Log.i("ScreenReceiver", message)
+        Log.d(TAG, message)
     }
 }

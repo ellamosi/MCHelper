@@ -8,8 +8,10 @@ import kotlin.math.log10
 
 class MCApi {
     companion object Client {
+        private val TAG = "MCApi"
         private val BASE_URL = "http://192.168.1.11/YamahaExtendedControl/v1/"
         private val TV_INPUT = "optical2"
+        private val POWER_ON = "on"
         private val MIN_VOL = 0
         private val MAX_VOL = 161
 
@@ -25,17 +27,29 @@ class MCApi {
             URL(BASE_URL + "main/setInput?input=" + TV_INPUT).readText()
         }
 
-        fun isOnTvInput() : Boolean {
+        fun getStatus() : JSONObject {
             val stringResponse = URL(BASE_URL + "main/getStatus").readText()
-            val jsonResponse = JSONTokener(stringResponse).nextValue() as JSONObject
-            val input = jsonResponse.getString("input")
+            return JSONTokener(stringResponse).nextValue() as JSONObject
+        }
+
+        fun setInputOnVolume(vol : Int) {
+            val status = getStatus()
+            val input = status.getString("input")
+            val power = status.getString("power")
+            if (input != TV_INPUT) setTvInput()
+            setVolume(vol)
+            if (power != POWER_ON) turnOn()
+        }
+
+        fun isOnTvInput() : Boolean {
+            val status = getStatus()
+            val input = status.getString("input")
             return this.TV_INPUT == input
         }
 
         fun setVolume(vol: Int) {
             var targetVol = if (vol == 0) 0 else (log10(vol.toDouble()) * 80.0).toInt() + 1
-            // val targetVol = (MIN_VOL + (MAX_VOL - MIN_VOL).toDouble() * vol/100.0).toInt()
-            Log.d("MCApi", "targetVol: " + targetVol)
+            Log.d(TAG, "targetVol: " + targetVol)
             URL(BASE_URL + "main/setVolume?volume=" + targetVol).readText()
         }
     }

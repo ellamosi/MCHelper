@@ -17,11 +17,12 @@
         <receiver android:name=".ScreenReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.SCREEN_ON"/>
+                <action android:name="android.intent.action.SCREEN_OFF"/>
             </intent-filter>
         </receiver>
         <receiver android:name=".AlarmReceiver">
             <intent-filter>
-                <action android:name="io.github.ellamosi.musiccasthelper.ALARM"/>
+                <action android:name="io.github.ellamosi.mchelper.START_SERVICE_ALARM"/>
             </intent-filter>
         </receiver>
         <service android:name=".MCHService" android:exported="true"/>
