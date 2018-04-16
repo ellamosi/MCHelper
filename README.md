@@ -11,6 +11,11 @@ In the end I came up with this Android app meant to be installed on the TV inste
 
 ## Features
 
-- *Volume Up/Down*: Turns on the amp, sets the volume (uses a logarithmic volume level mapping for more straightforward control). The volume bar can still be shown on screen if the option for external speakers is set, as long as the audio out is set to headphones (does not affect the level of the optical output).
+- *Volume Up/Down*: Turns on the amp (if off), sets the TV output (if not set), sets the volume (uses a logarithmic volume level mapping for more straightforward control). The volume bar can still be shown on screen if the option for external speakers is set, as long as the audio out is set to headphones (does not affect the level of the optical output).
 - *Screen On*: Turns on the amp, sets it to the TV Input
 - *Screen Off*: Turns off the amp only if the current input is the TV Input
+
+## Pitfalls
+
+- Cannot change behavior/configuration without altering the source code
+- Service needs to be started once through adb after installation for it to work. Should be fine after reboots.
