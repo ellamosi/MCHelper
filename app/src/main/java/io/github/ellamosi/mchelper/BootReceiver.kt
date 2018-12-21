@@ -10,13 +10,15 @@ import android.util.Log
 import java.util.*
 
 class BootReceiver : BroadcastReceiver() {
-    private val TAG = "BootReceiver"
-    private val alarmInterval : Long = 2 * 60 * 1000 // 2 minutes
+    companion object {
+        private const val TAG = "BootReceiver"
+        private const val alarmInterval: Long = 2 * 60 * 1000 // 2 minutes (min accepted)
+    }
 
     override fun onReceive(context: Context, intent: Intent) {
-        logIntent(context, intent)
+        logIntent(intent)
         if (intent.action.equals(Intent.ACTION_BOOT_COMPLETED, ignoreCase = true)) {
-            logIntent(context, intent)
+            logIntent(intent)
             val alarmManager = context.getSystemService(Service.ALARM_SERVICE) as AlarmManager
             val alarmIntent = Intent(AlarmReceiver.ACTION)
             val pendingIntent = PendingIntent.getBroadcast(context, 1, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT)
@@ -29,7 +31,7 @@ class BootReceiver : BroadcastReceiver() {
         }
     }
 
-    private fun logIntent(context: Context, intent : Intent) {
+    private fun logIntent(intent: Intent) {
         val message = "Broadcast intent detected " + intent.action
         Log.d(TAG, message)
     }

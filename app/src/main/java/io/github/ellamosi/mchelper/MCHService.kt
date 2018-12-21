@@ -6,32 +6,42 @@ import android.app.Service
 import android.content.IntentFilter
 import android.os.Handler
 import android.os.IBinder
+import io.github.ellamosi.mchelper.actions.*
 
 class MCHService : Service() {
-    private val TAG = "MchService"
-    var volumeObserver : VolumeObserver? = null
-    var volumeHandler : Handler? = null
+    companion object {
+        private const val TAG = "MchService"
+    }
+
+    private val worker = MCHWorker()
+    private val workerThread = Thread(worker)
+    private val volumeHandler = Handler()
+    private var volumeObserver : VolumeObserver? = null
+    private val screenReceiver = ScreenReceiver()
+    private val screenStateFilter = IntentFilter()
 
     override fun onCreate() {
         super.onCreate()
-        volumeHandler = Handler()
-    }
-
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        Log.i(TAG, "MCHService started")
-
-        val screenReceiver = ScreenReceiver()
-        val screenStateFilter = IntentFilter()
+        volumeObserver = VolumeObserver(worker, volumeHandler)
         screenStateFilter.addAction(Intent.ACTION_SCREEN_ON)
         screenStateFilter.addAction(Intent.ACTION_SCREEN_OFF)
         application.registerReceiver(screenReceiver, screenStateFilter)
-
-        volumeObserver = volumeHandler?.let { VolumeObserver(this, it) }
         applicationContext.contentResolver.registerContentObserver(
                 android.provider.Settings.System.CONTENT_URI,
                 true,
                 volumeObserver
         )
+        workerThread.start()
+    }
+
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        val extraAction = intent?.getStringExtra("ACTION")
+        Log.i(TAG, "MCHService started (action: '${intent?.action}', extraAction: '$extraAction')")
+
+        when (extraAction) {
+            "SCREEN_OFF" -> worker.enqueueAction(TurnOff())
+            "SCREEN_ON"  -> worker.enqueueAction(TurnOn())
+        }
 
         return Service.START_STICKY
     }
@@ -42,6 +52,6 @@ class MCHService : Service() {
 
     override fun onDestroy() {
         super.onDestroy()
-        applicationContext.contentResolver.unregisterContentObserver(volumeObserver);
+        applicationContext.contentResolver.unregisterContentObserver(volumeObserver)
     }
 }

@@ -6,9 +6,8 @@ import android.content.Intent
 import android.util.Log
 
 class AlarmReceiver : BroadcastReceiver() {
-    private val TAG = "AlarmReceiver"
-
     companion object {
+        private const val TAG = "AlarmReceiver"
         const val ACTION = "io.github.ellamosi.mchelper.START_SERVICE_ALARM"
     }
 
