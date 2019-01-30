@@ -1,16 +1,20 @@
 package io.github.ellamosi.mchelper
 
+import android.app.Notification
 import android.content.Intent
 import android.util.Log
 import android.app.Service
 import android.content.IntentFilter
 import android.os.Handler
 import android.os.IBinder
+import android.support.v4.app.NotificationCompat
 import io.github.ellamosi.mchelper.actions.*
 
 class MCHService : Service() {
     companion object {
         private const val TAG = "MchService"
+        private const val FOREGROUND_ID = 1337
+        private const val CHANNEL_ID = "some_channel_id"
     }
 
     private val worker = MCHWorker()
@@ -43,6 +47,10 @@ class MCHService : Service() {
             "SCREEN_ON"  -> worker.enqueueAction(TurnOn())
         }
 
+        val notification = buildForegroundNotification()
+
+        startForeground(FOREGROUND_ID, notification)
+
         return Service.START_STICKY
     }
 
@@ -53,5 +61,17 @@ class MCHService : Service() {
     override fun onDestroy() {
         super.onDestroy()
         applicationContext.contentResolver.unregisterContentObserver(volumeObserver)
+    }
+
+    private fun buildForegroundNotification(): Notification {
+        val b = NotificationCompat.Builder(applicationContext, CHANNEL_ID)
+
+        b.setOngoing(true)
+                .setContentTitle(applicationContext.getText(R.string.notification_title))
+                .setContentText(applicationContext.getText(R.string.notification_message))
+                .setSmallIcon(android.R.drawable.stat_sys_download)
+                .setTicker(applicationContext.getText(R.string.ticker_text))
+
+        return b.build()
     }
 }

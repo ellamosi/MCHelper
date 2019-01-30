@@ -3,6 +3,7 @@ package io.github.ellamosi.mchelper
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.support.v4.content.ContextCompat
 import android.util.Log
 
 class AlarmReceiver : BroadcastReceiver() {
@@ -15,7 +16,7 @@ class AlarmReceiver : BroadcastReceiver() {
         logIntent(intent)
         if (intent.action.equals(ACTION, ignoreCase = true)) {
             val serviceIntent = Intent(context, MCHService::class.java)
-            context.startService(serviceIntent)
+            ContextCompat.startForegroundService(context, serviceIntent)
         }
     }
 

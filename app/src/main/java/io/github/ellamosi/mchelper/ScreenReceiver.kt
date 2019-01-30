@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
+import android.support.v4.content.ContextCompat.startForegroundService
 
 class ScreenReceiver : BroadcastReceiver() {
     companion object {
@@ -21,13 +22,13 @@ class ScreenReceiver : BroadcastReceiver() {
     private fun screenOn(context: Context) {
         val intent = Intent(context, MCHService::class.java)
         intent.putExtra("ACTION", "SCREEN_ON")
-        context.startService(intent)
+        startForegroundService(context, intent)
     }
 
     private fun screenOff(context: Context) {
         val intent = Intent(context, MCHService::class.java)
         intent.putExtra("ACTION", "SCREEN_OFF")
-        context.startService(intent)
+        startForegroundService(context, intent)
     }
 
     private fun logIntent(intent : Intent) {

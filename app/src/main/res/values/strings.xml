@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">MCHelper</string>
+    <string name="notification_title">MCHelper</string>
+    <string name="notification_message">MCHelper, enabling HiFi volume control</string>ticker_text
+    <string name="ticker_text">Ticker text</string>
 </resources>
