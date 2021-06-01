@@ -19,3 +19,6 @@ In the end I came up with this Android app meant to be installed on the TV inste
 
 - Cannot change behavior/configuration without altering the source code
 - Service needs to be started once through adb after installation for it to work. Should be fine after reboots.
+```
+adb shell am start-foreground-service io.github.ellamosi.mchelper/.MCHService
+```
