@@ -8,7 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import java.util.*
-import android.support.v4.content.ContextCompat.startForegroundService
+import androidx.core.content.ContextCompat.startForegroundService
 
 
 class BootReceiver : BroadcastReceiver() {

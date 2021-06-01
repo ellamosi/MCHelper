@@ -4,7 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
-import android.support.v4.content.ContextCompat.startForegroundService
+import androidx.core.content.ContextCompat.startForegroundService
 
 class ScreenReceiver : BroadcastReceiver() {
     companion object {

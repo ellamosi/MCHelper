@@ -18,7 +18,8 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
         <receiver android:name=".BootReceiver" android:enabled="true" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
@@ -30,11 +31,16 @@
                 <action android:name="android.intent.action.SCREEN_OFF"/>
             </intent-filter>
         </receiver>
-        <receiver android:name=".AlarmReceiver">
+        <receiver
+            android:name=".AlarmReceiver"
+            android:exported="false">
             <intent-filter>
                 <action android:name="io.github.ellamosi.mchelper.START_SERVICE_ALARM"/>
             </intent-filter>
         </receiver>
-        <service android:name=".MCHService" android:exported="true"/>
+        <service
+            android:name=".MCHService"
+            android:permission="android.permission.FOREGROUND_SERVICE"
+            android:exported="true"/>
     </application>
 </manifest>
