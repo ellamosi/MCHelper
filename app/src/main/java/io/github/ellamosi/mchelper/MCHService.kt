@@ -89,7 +89,11 @@ class MCHService : Service() {
 
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val serviceChannel = NotificationChannel(CHANNEL_ID, "Service Notifications Channel", NotificationManager.IMPORTANCE_MIN)
+            val serviceChannel = NotificationChannel(
+                CHANNEL_ID,
+                "Service Notifications Channel",
+                NotificationManager.IMPORTANCE_MIN
+            )
             val notificationManager = getSystemService(NotificationManager::class.java)
             notificationManager.createNotificationChannel(serviceChannel)
         }

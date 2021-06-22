@@ -22,11 +22,22 @@ class BootReceiver : BroadcastReceiver() {
         if (intent.action.equals(Intent.ACTION_BOOT_COMPLETED, ignoreCase = true)) {
             logIntent(intent)
             val alarmManager = context.getSystemService(Service.ALARM_SERVICE) as AlarmManager
-            val alarmIntent = Intent(AlarmReceiver.ACTION)
-            val pendingIntent = PendingIntent.getBroadcast(context, 1, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT)
-            val calendar = Calendar.getInstance()
 
-            alarmManager.setInexactRepeating(AlarmManager.RTC, calendar.timeInMillis, alarmInterval, pendingIntent)
+            val alarmIntent = Intent(context, AlarmReceiver::class.java)
+            alarmIntent.action = AlarmReceiver.ACTION
+            val pendingIntent = PendingIntent.getBroadcast(
+                context,
+                1,
+                alarmIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT
+            )
+
+            alarmManager.setInexactRepeating(
+                AlarmManager.RTC,
+                Calendar.getInstance().timeInMillis,
+                alarmInterval,
+                pendingIntent
+            )
 
             val serviceIntent = Intent(context, MCHService::class.java)
             startForegroundService(context, serviceIntent)
