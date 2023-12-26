@@ -1,6 +1,5 @@
 package io.github.ellamosi.mchelper
 
-import android.util.Log
 import java.net.URL
 import org.json.JSONObject
 import org.json.JSONTokener
